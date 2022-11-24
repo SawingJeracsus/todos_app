@@ -4,6 +4,9 @@ class Program
 {
     static void Main()
     {
-        Console.WriteLine("Hello World!");
+        var bus = new InputBus();
+        var ioStream = new ConsoleInputMethod(bus);
+        
+        ioStream.Listen();
     }
 }
