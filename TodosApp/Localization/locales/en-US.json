@@ -1,7 +1,8 @@
 {
-  "welcome": "Welcome to the ToDo's App. Please, provide your login for me:",
+  "welcome": "Welcome to the ToDo's App.",
   "help": "My commands:\n1. help - displays this message",
   "prompt": {
+    "welcome": "To get commands list just type help",
     "login": {
       "question": "Please, provide your login for me:",
       "error": "Login can't be empty!"

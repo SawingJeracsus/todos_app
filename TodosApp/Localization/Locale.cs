@@ -59,6 +59,6 @@ public class Locale
 
     private string GetLocalPath(string locale)
     {
-        return Path.Combine(Environment.CurrentDirectory, $"Localization/locales/{locale}.json");;
+        return Path.Combine(Environment.CurrentDirectory, $"Localization/locales/{locale}.json");
     }
 }

@@ -23,11 +23,10 @@ where T: BaseModel, new()
 
         var reader = command.ExecuteReader();
 
-        while (reader.HasRows)
+        while (reader.Read())
         {
-            reader.Read();
             var row = _parse(reader);
-            
+
             result.Add(row);
         }
 

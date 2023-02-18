@@ -4,7 +4,7 @@ namespace TodosApp.InputMethods.ConsoleInput;
 
 public class ConsoleInputMethod : BaseInputMethod
 {
-    // t means translation, it is often used short name
+    // t means translation, it is often-used short name
     private Localization.Localization t;
     private Prompt _prompt;
     
@@ -16,14 +16,18 @@ public class ConsoleInputMethod : BaseInputMethod
 
     public override void Listen()
     {
-        // todo make session logic (with FileService)
-        Console.WriteLine(t.Get("welcome"));
-        var login = _prompt.Ask("login");
-        var nickname = _prompt.Ask("nickname");
-
-        Bus.Start(login, nickname);
         
-        Console.WriteLine("Welcome to mine prompt! to get commands list just type help");
+        Console.WriteLine(t.Get("welcome"));
+        
+        if (Bus.ShouldRegisterUser())
+        {
+            var login = _prompt.Ask("login");
+            var nickname = _prompt.Ask("nickname");
+
+            Bus.CreateUser(login, nickname);    
+        }
+        
+        Console.WriteLine(t.Get("prompt.welcome"));
         _startPrompt();
     }
 
