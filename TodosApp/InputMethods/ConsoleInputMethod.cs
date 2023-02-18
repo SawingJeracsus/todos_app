@@ -2,15 +2,20 @@ namespace TodosApp.InputMethods;
 
 public class ConsoleInputMethod : BaseInputMethod
 {
-    public ConsoleInputMethod(InputBus bus) : base(bus) {}
+    // t means translation, it is often used short name
+    private Localization.Localization t;
+    
+    public ConsoleInputMethod(InputBus bus, Localization.Localization localization) : base(bus)
+    {
+        t = localization;
+    }
 
     public override void Listen()
     {
         // todo make session logic (with FileService)
-        // todo move it to 118n service
-        Console.WriteLine("Welcome to the ToDo's App. Please, provide your login for me:");
-        var login = _prompt("Welcome to the ToDo's App. Please, provide your login for me:", "Login can't be empty!");
-        var nickname = _prompt("Please, provide your nickname for me:", "Nickname can't be empty!");
+        Console.WriteLine(t.Get("welcome"));
+        var login = _prompt("login");
+        var nickname = _prompt("nickname");
 
         Bus.Start(login, nickname);
         
@@ -18,25 +23,25 @@ public class ConsoleInputMethod : BaseInputMethod
         _startPrompt();
     }
 
-    private string? _prompt(string promptQuestion)
+    private string _prompt(string promptKey)
     {
-        Console.WriteLine(promptQuestion);
-        var result = Console.ReadLine();
-
-        return result;
-    }
-
-    private string _prompt(string promptQuestion, string errorMessage)
-    {
-        Console.WriteLine(promptQuestion);
+        Console.WriteLine(t.Get($"prompt.{promptKey}.question"));
         var result = Console.ReadLine();
         
         while (result == null)
         {
-            Console.WriteLine(errorMessage);
+            Console.WriteLine(t.Get($"prompt.{promptKey}.error"));
             
             result = Console.ReadLine();
         }
+
+        return result;
+    }
+    
+    private string? _promptSoft(string promptKey)
+    {
+        Console.WriteLine(t.Get($"prompt.{promptKey}.question"));
+        var result = Console.ReadLine();
 
         return result;
     }

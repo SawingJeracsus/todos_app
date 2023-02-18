@@ -1,0 +1,13 @@
+{
+  "welcome": "Welcome to the ToDo's App. Please, provide your login for me:",
+  "prompt": {
+    "login": {
+      "question": "Please, provide your login for me:",
+      "error": "Login can't be empty!"
+    },
+    "nickname": {
+      "question": "Please, provide your nickname for me:",
+      "error":  "Nickname can't be empty!"
+    }
+  }
+}

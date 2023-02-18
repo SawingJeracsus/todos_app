@@ -1,4 +1,3 @@
-using TodosApp.DB.Models;
 using TodosApp.DB.Services;
 namespace TodosApp;
 
