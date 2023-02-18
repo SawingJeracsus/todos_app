@@ -1,9 +1,13 @@
-namespace Program;
+using TodosApp.DB.Models;
+using TodosApp.DB.Services;
+namespace TodosApp;
 
 public class InputBus
 {
-    public void Start(string userIdentifier)
+    public void Start(string userIdentifier, string nickname)
     {
-        // here i'll call AuthService.CreateIfNotExists
-    }
+        var userService = new UserService();
+
+        userService.CreateIfNotExists(userIdentifier, nickname);   
+     }
 }

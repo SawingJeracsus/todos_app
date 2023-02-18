@@ -4,12 +4,42 @@ namespace TodosApp.DB;
 
 public class DbContext
 {
+    public SQLiteConnection Connection;
+    
     private static DbContext? _instance = null;
     private static readonly object Padlock = new object();
 
-    private readonly string _path = "db.sql";
+    private readonly string _path = "todos_app.db";
     private bool _open = false;
-    public SQLiteConnection Connection;
+    private readonly string _seed = @"
+CREATE TABLE user ( 
+	Id                  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	Identifier          VARCHAR(255)  NOT NULL     ,
+	Nickname            VARCHAR(100)  NOT NULL     ,
+	CreatedAt           DATETIME  NOT NULL DEFAULT (CURRENT_TIMESTAMP)    ,
+	UpdatedAt           DATETIME  NOT NULL DEFAULT (CURRENT_TIMESTAMP)    
+ );
+
+CREATE  TABLE todo ( 
+	Id                  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	Author              INT UNSIGNED NOT NULL     ,
+	Assignee            INT UNSIGNED NOT NULL     ,
+	Task                CHAR(255)       ,
+	Description         TEXT       ,
+	Completed           BIT  NOT NULL DEFAULT (0)    ,
+	CreatedAt           DATETIME  NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+	UpdatedAt           DATETIME  NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+  	FOREIGN KEY(Author, Assignee) REFERENCES user(id, id)
+ );
+
+CREATE  TABLE file ( 
+	Id                  INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT,
+	FileType            VARCHAR(255)  NOT NULL     ,
+	FilePath            VARCHAR(255)  NOT NULL     ,
+	TodoId              INT UNSIGNED NOT NULL,
+  	FOREIGN KEY(TodoId) REFERENCES todo(id)
+ );
+";
 
     private DbContext()
     {
@@ -18,10 +48,19 @@ public class DbContext
         if (!File.Exists(_path))
         {
             SQLiteConnection.CreateFile(_path);
+            
+            Console.WriteLine("creating the database");
+        
+            Connection.Open();
+            _open = true;
+            
+            var seedCommand = new SQLiteCommand(_seed, Connection);
+            seedCommand.ExecuteNonQuery();
+        
+            Console.WriteLine("the database is created");
         }
 
-        Connection.Open();
-        _open = true;
+        OpenConnectionIfClosed();
     }
     
     public static DbContext Instance

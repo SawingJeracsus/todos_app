@@ -1,4 +1,4 @@
-namespace Program;
+namespace TodosApp.InputMethods;
 
 public abstract class BaseInputMethod
 {

@@ -7,17 +7,75 @@ namespace TodosApp.DB.Services;
 public abstract class BaseService<T>
 where T: BaseModel, new()
 {
-    private readonly string _tableName;
+    public readonly string TableName;
     private readonly DbContext _context = DbContext.Instance;
 
     private FieldInfo[] Fields => typeof(T).GetFields().Where(field => field.IsPublic).ToArray();
 
-    public BaseService(string tableName)
+    protected BaseService(string tableName)
     {
-        _tableName = tableName;
+        TableName = tableName;
     }
 
-    private T Parse(SQLiteDataReader reader)
+    public List<T> Select(SQLiteCommand command)
+    {
+        var result = new List<T>();
+
+        var reader = command.ExecuteReader();
+
+        while (reader.HasRows)
+        {
+            reader.Read();
+            var row = _parse(reader);
+            
+            result.Add(row);
+        }
+
+        return result;
+    }
+
+    public List<T> Select(string sql)
+    {
+        var command = CreateCommand(sql);
+        return Select(command);
+    }
+    
+    public T GetItemById(int id)
+    {
+        var command = CreateCommand(AppendTableName("SELECT * FROM {0} WHERE id = @id"));
+        command.Parameters.AddWithValue("@id", id.ToString());
+
+        var resultList = Select(command);
+
+        if (resultList.Count == 0)
+        {
+            throw new KeyNotFoundException();
+        }
+        
+        return resultList[0];
+    }
+
+    public void Add(T data)
+    {
+        var sql = SqlBuilder.BuildInsert(TableName, data);
+        var command = CreateCommand(sql);
+
+        command.ExecuteNonQuery();
+    }
+
+    public string AppendTableName(string sql)
+    {
+        return string.Format(sql, TableName);
+    }
+
+    public SQLiteCommand CreateCommand(string sql)
+    {
+        _context.OpenConnectionIfClosed();
+
+        return new SQLiteCommand(sql, _context.Connection);
+    }
+    
+    private T _parse(SQLiteDataReader reader)
     {
         var result = new T();
         
@@ -27,35 +85,5 @@ where T: BaseModel, new()
         }
 
         return result;
-    }
-    public T GetItemById(int id)
-    {
-        var command = new SQLiteCommand(_appendTableName("SELECT * FROM {0} WHERE id = @id"), _context.Connection);
-        command.Parameters.AddWithValue("@id", id.ToString());
-
-        var reader = command.ExecuteReader();
-
-        if (!reader.HasRows)
-        {
-            throw new KeyNotFoundException();
-        }
-
-        reader.Read();
-
-        return Parse(reader);
-    }
-
-    public void Add(T data)
-    {
-        var sql = SqlFormatter.BuildInsert(_tableName, data);
-        _context.OpenConnectionIfClosed();
-        var command = new SQLiteCommand(sql, _context.Connection);
-
-        command.ExecuteNonQuery();
-    }
-
-    private string _appendTableName(string sql)
-    {
-        return string.Format(sql, _tableName);
     }
 }

@@ -1,6 +1,6 @@
 namespace TodosApp.DB;
 
-public class SqlFormatter
+public class SqlBuilder
 {
     public static String BuildInsert(String tableName, object data)
     {

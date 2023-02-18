@@ -1,4 +1,6 @@
-﻿namespace Program;
+﻿using TodosApp.InputMethods;
+
+namespace TodosApp;
 
 class Program
 {
