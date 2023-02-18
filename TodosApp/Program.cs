@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using TodosApp.InputMethods;
+using TodosApp.InputMethods.ConsoleInput;
 
 namespace TodosApp;
 
