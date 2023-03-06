@@ -41,7 +41,7 @@ where T: BaseModel, new()
     
     public T GetItemById(int id)
     {
-        var command = CreateCommand(AppendTableName("SELECT * FROM {0} WHERE id = @id"));
+        var command = CreateCommand(AppendTableName("SELECT * FROM {0} WHERE Id = @id"));
         command.Parameters.AddWithValue("@id", id.ToString());
 
         var resultList = Select(command);
@@ -56,6 +56,9 @@ where T: BaseModel, new()
 
     public void Add(T data)
     {
+        data.CreatedAt = DateTime.Now;
+        data.UpdatedAt = DateTime.Now;
+        
         var sql = SqlBuilder.BuildInsert(TableName, data);
         var command = CreateCommand(sql);
 
@@ -77,11 +80,22 @@ where T: BaseModel, new()
     private T _parse(SQLiteDataReader reader)
     {
         var result = new T();
+
+       var test = reader["CreatedAt"];
+
+       try
+       {
+           foreach (var field in Fields)
+           {
+               field.SetValue(result, reader[field.Name]);
+           }
+       }
+       catch (Exception e)
+       {
+           Console.WriteLine(e);
+           throw e;
+       }
         
-        foreach (var field in Fields)
-        {
-            field.SetValue(result, reader[field.Name]);
-        }
 
         return result;
     }

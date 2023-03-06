@@ -10,9 +10,20 @@
     "nickname": {
       "question": "Please, provide your nickname for me:",
       "error":  "Nickname can't be empty!"
+    },
+    "todoTitle": {
+      "question": "Please, provide todo title for me:",
+      "error":  "Todo title can't be empty!"
+    },
+    "todoDescription": {
+      "question": "Please, provide todo description for me:"
     }
   },
   "errors": {
     "unsupportedCommand": "This command is not supported"
+  },
+  "addTodo": {
+    "success": "Todo has added successfully",
+    "error": "Error occured while todo adding"
   }
 }

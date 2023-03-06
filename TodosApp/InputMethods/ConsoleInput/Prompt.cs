@@ -14,7 +14,7 @@ public class Prompt
         Console.WriteLine(t.Get($"prompt.{key}.question"));
         var result = Console.ReadLine();
         
-        while (result == null)
+        while (result == null || result.Trim().Length == 0)
         {
             Console.WriteLine(t.Get($"prompt.{key}.error"));
             

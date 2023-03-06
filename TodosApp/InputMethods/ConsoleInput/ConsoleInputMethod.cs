@@ -39,7 +39,7 @@ public class ConsoleInputMethod : BaseInputMethod
         {
             var input = Console.ReadLine();
 
-            if (input == null)
+            if (input == null || input.Trim().Length == 0)
             {
                 continue;;
             }

@@ -16,28 +16,20 @@ CREATE TABLE user (
 	Id                  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	Identifier          VARCHAR(255)  NOT NULL     ,
 	Nickname            VARCHAR(100)  NOT NULL     ,
-	CreatedAt           DATETIME  NOT NULL DEFAULT (CURRENT_TIMESTAMP)    ,
-	UpdatedAt           DATETIME  NOT NULL DEFAULT (CURRENT_TIMESTAMP)    
+	CreatedAt           DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	UpdatedAt           DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
  );
 
 CREATE  TABLE todo ( 
 	Id                  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-	Author              INT UNSIGNED NOT NULL     ,
-	Assignee            INT UNSIGNED NOT NULL     ,
+	Author              INTEGER UNSIGNED NOT NULL     ,
+	Assignee            INTEGER UNSIGNED NOT NULL     ,
 	Task                CHAR(255)       ,
 	Description         TEXT       ,
 	Completed           BIT  NOT NULL DEFAULT (0)    ,
 	CreatedAt           DATETIME  NOT NULL DEFAULT (CURRENT_TIMESTAMP),
 	UpdatedAt           DATETIME  NOT NULL DEFAULT (CURRENT_TIMESTAMP),
   	FOREIGN KEY(Author, Assignee) REFERENCES user(id, id)
- );
-
-CREATE  TABLE file ( 
-	Id                  INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT,
-	FileType            VARCHAR(255)  NOT NULL     ,
-	FilePath            VARCHAR(255)  NOT NULL     ,
-	TodoId              INT UNSIGNED NOT NULL,
-  	FOREIGN KEY(TodoId) REFERENCES todo(id)
  );
 ";
 

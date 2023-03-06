@@ -5,7 +5,9 @@ public class SqlBuilder
     public static String BuildInsert(String tableName, object data)
     {
         var fields = data.GetType().GetFields();
-        var columns = fields.Where(field => field.IsPublic && field.Name != "Id").ToArray();
+        string[] defaultColumns = { "Id" };
+        
+        var columns = fields.Where(field => field.IsPublic && defaultColumns.All(defaultColumn => defaultColumn != field.Name )).ToArray();
         var columnsLine = String.Join(",", columns.Select(column => column.Name));
         var values = new List<String>();
 
@@ -36,12 +38,16 @@ public class SqlBuilder
         {
             return nullString;
         }
+
+        var type = value.GetType().Name;
+        Console.Write(type);
         
         switch (value.GetType().Name)
         {
             case "String":
                 return $"\"{value}\"";
             case "Int32":
+            case "Int64":
             case "Double":
                 var result = value.ToString();
                 
@@ -51,6 +57,10 @@ public class SqlBuilder
                 }
                 
                 return result;
+            case "DateTime":
+                var dateTime = (DateTime) value;
+                
+                return $"\"{dateTime.Year.ToString()}-{dateTime.Month.ToString("00")}-{dateTime.Day.ToString("00")} {dateTime.Hour.ToString("00")}:{dateTime.Minute.ToString("00")}:{dateTime.Millisecond.ToString("00")}\"";
             default:
                 return nullString;
         }

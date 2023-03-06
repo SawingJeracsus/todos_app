@@ -1,4 +1,5 @@
 using TodosApp.DB.Models;
+using TodosApp.Session;
 
 namespace TodosApp.DB.Services;
 
@@ -7,6 +8,21 @@ public class UserService: BaseService<UserModel>
     public UserService() : base("user")
     { }
 
+    public static UserModel? GetSessionUser()
+    {
+        var identifierSession = new UserIdentifierSessionValue();
+        var identifier = identifierSession.Get();
+
+        if (identifier == null)
+        {
+            return null;
+        }
+
+        var service = new UserService();
+
+        return service.GetUserByIdentifier(identifier);
+    }
+    
     public void CreateIfNotExists(string userIdentifier, string nickname)
     {
         if (UserWithIdentifierExists(userIdentifier))

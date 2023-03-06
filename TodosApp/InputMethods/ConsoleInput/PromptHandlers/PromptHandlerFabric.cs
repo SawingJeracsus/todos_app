@@ -1,3 +1,4 @@
+using TodosApp.InputMethods.ConsoleInput.PromptHandlers;
 using TodosApp.InputMethods.ConsoleInputMethod.PromptHandlers;
 
 namespace TodosApp.InputMethods.PromptHandlers;
@@ -6,7 +7,8 @@ public class PromptHandlerFabric : BasePromptHandler
 {
     private readonly BasePromptHandler[] _methods =
     {
-        new HelpPromptHandler()
+        new HelpPromptHandler(),
+        new AddTodoHandler()
     };
 
     public override bool OnMessage(string message, Prompt prompt)
