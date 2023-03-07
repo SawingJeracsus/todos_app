@@ -44,7 +44,7 @@ public class InputBus
         todoModel.Assignee = todoModel.Author = user.Id;
         todoModel.Task = title;
         todoModel.Description = description;
-        todoModel.Completed = 0;
+        todoModel.Completed = false;
         
         todoService.Add(todoModel);
     }

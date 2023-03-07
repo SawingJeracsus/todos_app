@@ -50,7 +50,7 @@ public class AddTodoHandler: BasePromptHandler
 
         model.Author = user.Id;
         model.Assignee = user.Id;
-        model.Completed = 0;
+        model.Completed = false;
         model.Description = description;
         model.Task = task;
 

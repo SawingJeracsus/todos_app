@@ -8,7 +8,8 @@ public class PromptHandlerFabric : BasePromptHandler
     private readonly BasePromptHandler[] _methods =
     {
         new HelpPromptHandler(),
-        new AddTodoHandler()
+        new AddTodoHandler(),
+        new GetTodosListHandler()
     };
 
     public override bool OnMessage(string message, Prompt prompt)

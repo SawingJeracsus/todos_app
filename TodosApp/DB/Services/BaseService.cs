@@ -9,12 +9,23 @@ where T: BaseModel, new()
 {
     public readonly string TableName;
     private readonly DbContext _context = DbContext.Instance;
+    private readonly Dictionary<string, Func<object>> _defaultValues = new Dictionary<string, Func<object>>()
+    {
+        {"CreatedAt", () => DateTime.Now as object},
+        {"UpdatedAt", () => DateTime.Now as object},
+    };
 
     private FieldInfo[] Fields => typeof(T).GetFields().Where(field => field.IsPublic).ToArray();
 
     protected BaseService(string tableName)
     {
         TableName = tableName;
+    }
+    
+    protected BaseService(string tableName, Dictionary<string, Func<object>> defaultValues)
+    {
+        TableName = tableName;
+        defaultValues.ToList().ForEach(x => _defaultValues.Add(x.Key, x.Value));
     }
 
     public List<T> Select(SQLiteCommand command)
@@ -56,8 +67,7 @@ where T: BaseModel, new()
 
     public void Add(T data)
     {
-        data.CreatedAt = DateTime.Now;
-        data.UpdatedAt = DateTime.Now;
+        SetDefaultValues(data);
         
         var sql = SqlBuilder.BuildInsert(TableName, data);
         var command = CreateCommand(sql);
@@ -81,8 +91,6 @@ where T: BaseModel, new()
     {
         var result = new T();
 
-       var test = reader["CreatedAt"];
-
        try
        {
            foreach (var field in Fields)
@@ -98,5 +106,20 @@ where T: BaseModel, new()
         
 
         return result;
+    }
+
+    private void SetDefaultValues(T row)
+    {
+        foreach (var entry in _defaultValues)
+        {
+            var field = Fields.First(field => field.Name == entry.Key);
+
+            if (field == null)
+            {
+                continue;;
+            }
+            
+            field.SetValue(row, entry.Value());
+        }
     }
 }
