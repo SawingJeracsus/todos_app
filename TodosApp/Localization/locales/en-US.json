@@ -25,5 +25,14 @@
   "addTodo": {
     "success": "Todo has added successfully",
     "error": "Error occured while todo adding"
+  },
+  "todo": {
+    "noRows": "No todos...",
+    "complete": {
+      "success": "Task had marked completed successfully",
+      "error": "Error occured while marking as completed todo",
+      "select": "Select todo to mark it completed",
+      "moreOptions": "Move down to see more options"
+    }
   }
 }

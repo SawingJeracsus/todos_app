@@ -9,7 +9,8 @@ public class PromptHandlerFabric : BasePromptHandler
     {
         new HelpPromptHandler(),
         new AddTodoHandler(),
-        new GetTodosListHandler()
+        new GetTodosListHandler(),
+        new CompleteTodoHandler()
     };
 
     public override bool OnMessage(string message, Prompt prompt)

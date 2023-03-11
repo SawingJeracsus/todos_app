@@ -9,4 +9,10 @@ public class TodoService: BaseService<TodoModel>
         {"Completed", () => false as object}
     })
     { }
+
+    public void MarkAsCompleted(long Id)
+    {
+        var command = CreateCommand($"UPDATE {TableName} SET Completed = 1 WHERE Id = {Id}");
+        command.ExecuteNonQuery();
+    }
 }
