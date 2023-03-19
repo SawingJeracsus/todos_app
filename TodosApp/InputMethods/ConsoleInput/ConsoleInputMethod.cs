@@ -1,3 +1,4 @@
+using Spectre.Console;
 using TodosApp.InputMethods.PromptHandlers;
 
 namespace TodosApp.InputMethods.ConsoleInput;
@@ -16,8 +17,7 @@ public class ConsoleInputMethod : BaseInputMethod
 
     public override void Listen()
     {
-        
-        Console.WriteLine(t.Get("welcome"));
+        AnsiConsole.Write(new FigletText(t.Get("welcome")).Centered().Color(Color.Green));
         
         if (Bus.ShouldRegisterUser())
         {

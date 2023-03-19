@@ -5,13 +5,23 @@ namespace TodosApp.InputMethods.PromptHandlers;
 
 public class PromptHandlerFabric : BasePromptHandler
 {
-    private readonly BasePromptHandler[] _methods =
+    private static readonly BasePromptHandler[] _methods =
     {
         new HelpPromptHandler(),
         new AddTodoHandler(),
         new GetTodosListHandler(),
-        new CompleteTodoHandler()
+        new CompleteTodoHandler(),
+        new ExitHandler()
     };
+
+    public static string[] GetCommandNames()
+    {
+        return _methods.Select(handler => handler.GetCommandName()).ToArray();
+    }
+    public override string GetCommandName()
+    {
+        return "fabric";
+    }
 
     public override bool OnMessage(string message, Prompt prompt)
     {

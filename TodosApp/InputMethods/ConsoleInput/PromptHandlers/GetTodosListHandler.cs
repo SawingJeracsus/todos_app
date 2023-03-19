@@ -5,6 +5,11 @@ namespace TodosApp.InputMethods.ConsoleInput.PromptHandlers;
 
 public class GetTodosListHandler : BasePromptHandler
 {
+    public override string GetCommandName()
+    {
+        return "ls";
+    }
+
     public override bool OnMessage(string message, Prompt prompt)
     {
         if (!isOwnComand(message))

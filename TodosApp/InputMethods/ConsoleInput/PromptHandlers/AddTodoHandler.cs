@@ -1,3 +1,4 @@
+using Spectre.Console;
 using TodosApp.DB.Models;
 using TodosApp.DB.Services;
 
@@ -6,7 +7,12 @@ namespace TodosApp.InputMethods.ConsoleInput.PromptHandlers;
 public class AddTodoHandler: BasePromptHandler
 {
     private Prompt _prompt;
-    
+
+    public override string GetCommandName()
+    {
+        return "add";
+    }
+
     public override bool OnMessage(string message, Prompt prompt)
     {
         _prompt = prompt;
@@ -23,11 +29,11 @@ public class AddTodoHandler: BasePromptHandler
         
             service.Add(model);
         
-            Console.Write(prompt.t.Get("addTodo.success"));
+            AnsiConsole.MarkupLine($"[bold green]{prompt.t.Get("addTodo.success")}[/]");
         }
-        catch (Exception e)
+        catch
         {
-            Console.Write(prompt.t.Get("addTodo.error"));
+            AnsiConsole.MarkupLine($"[bold red]{prompt.t.Get("addTodo.error")}[/]");
         }
         
         

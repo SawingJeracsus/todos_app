@@ -1,6 +1,18 @@
 {
   "welcome": "Welcome to the ToDo's App.",
-  "help": "My commands:\n1. help - displays this message",
+  "help": {
+    "columns": {
+      "name": "Name",
+      "description": "Description"
+    },
+    "rows": {
+      "help": "Shows this message",
+      "add": "Allows add new todo record",
+      "ls": "Shows list of todos",
+      "cmpl": "Allow to mark todo as completed",
+      "exit": "Terminates program"
+    }
+  },
   "prompt": {
     "welcome": "To get commands list just type help",
     "login": {

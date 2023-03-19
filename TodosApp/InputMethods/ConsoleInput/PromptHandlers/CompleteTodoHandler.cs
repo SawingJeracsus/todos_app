@@ -7,7 +7,12 @@ namespace TodosApp.InputMethods.ConsoleInput.PromptHandlers;
 public class CompleteTodoHandler: BasePromptHandler
 {
     private Prompt _prompt;
-    
+
+    public override string GetCommandName()
+    {
+        return "cmpl";
+    }
+
     public override bool OnMessage(string message, Prompt prompt)
     {
         _prompt = prompt;
@@ -34,7 +39,7 @@ public class CompleteTodoHandler: BasePromptHandler
                 AnsiConsole.Write(new Markup($"[bold yellow]{_prompt.t.Get("todo.noRows")}[/]\n"));
             }
         }
-        catch(Exception e)
+        catch
         {
             AnsiConsole.Write(new Markup($"[bold red]{_prompt.t.Get("todo.complete.error")}[/]\n"));
         }

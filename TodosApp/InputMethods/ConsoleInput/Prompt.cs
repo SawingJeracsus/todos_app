@@ -1,3 +1,4 @@
+using Spectre.Console;
 namespace TodosApp.InputMethods;
 
 public class Prompt
@@ -11,14 +12,15 @@ public class Prompt
     
     public string Ask(string key)
     {
-        Console.WriteLine(t.Get($"prompt.{key}.question"));
-        var result = Console.ReadLine();
+        var result = FormattedAsk(key);
         
         while (result == null || result.Trim().Length == 0)
         {
-            Console.WriteLine(t.Get($"prompt.{key}.error"));
+            var errorMessage = t.Get($"prompt.{key}.error");
             
-            result = Console.ReadLine();
+            AnsiConsole.Write(new Markup($"[bold red]{errorMessage}[/]\n") );
+            
+            result = FormattedAsk(key);
         }
 
         return result;
@@ -26,9 +28,13 @@ public class Prompt
     
     public string? AskSoft(string promptKey)
     {
-        Console.WriteLine(t.Get($"prompt.{promptKey}.question"));
-        var result = Console.ReadLine();
+        var result = FormattedAsk(promptKey);
 
         return result;
+    }
+
+    private string? FormattedAsk(string key)
+    {
+        return AnsiConsole.Prompt(new TextPrompt<string?>(t.Get($"prompt.{key}.question")).PromptStyle("blue").AllowEmpty());
     }
 }
